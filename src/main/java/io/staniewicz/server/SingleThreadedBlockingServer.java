@@ -1,4 +1,4 @@
-package io.staniewicz;
+package io.staniewicz.server;
 
 import java.io.IOException;
 import java.io.InputStream;
