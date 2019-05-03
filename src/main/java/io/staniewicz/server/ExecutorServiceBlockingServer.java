@@ -1,24 +1,25 @@
 package io.staniewicz.server;
 
+import io.staniewicz.handlers.ExecutorServiceHandler;
 import io.staniewicz.handlers.Handler;
 import io.staniewicz.handlers.PrintingHandler;
-import io.staniewicz.handlers.ThreadedHandler;
 import io.staniewicz.handlers.TransmogrifyHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.Executors;
 
-public class MultiThreadedBlockingServer {
+public class ExecutorServiceBlockingServer {
 
     public static void main(String[] args) throws IOException {
 
         ServerSocket serverSocket = new ServerSocket(8080);
         Handler<Socket> handler =
-                new ThreadedHandler<>(
-                        new PrintingHandler<>(
-                                new TransmogrifyHandler()
-                        )
+                new ExecutorServiceHandler<Socket>(
+                        new PrintingHandler<>(new TransmogrifyHandler()),
+                        Executors.newFixedThreadPool(10),
+                        (t, e) -> System.out.println("Uncaught esception " + e + " from thread: " + t)
                 );
 
         while (true) {
