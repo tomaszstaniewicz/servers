@@ -16,7 +16,7 @@ public class ExecutorServiceBlockingServer {
 
         ServerSocket serverSocket = new ServerSocket(8080);
         Handler<Socket> handler =
-                new ExecutorServiceHandler<Socket>(
+                new ExecutorServiceHandler<>(
                         new PrintingHandler<>(new TransmogrifyHandler()),
                         Executors.newFixedThreadPool(10),
                         (t, e) -> System.out.println("Uncaught esception " + e + " from thread: " + t)
